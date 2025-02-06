@@ -60,14 +60,6 @@ python run.py
 ```
 
 ### **4️⃣ Generate Fake Data**  
-- **Generate Users:**  
-  ```sh
-  curl -X GET http://localhost:5000/generate_users/10
-  ```
-- **Generate Orders:**  
-  ```sh
-  curl -X GET http://localhost:5000/generate_orders/10
-  ```
 - **Register a User:**  
   ```sh
   curl -X GET http://localhost:5000/register_user
