@@ -4,6 +4,10 @@ from app.models import User, Order
 
 main = Blueprint('main', __name__)
 
+@main.route('/', methods=['GET'])
+def home():
+    return jsonify({'message': 'Welcome!'})
+
 @main.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
