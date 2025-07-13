@@ -1,14 +1,10 @@
-import os
 from flask import Flask
+from app.config import Config
 from app.database import init_db
 
 def create_app():
     app = Flask(__name__)
-
-    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    DB_PATH = os.path.join(BASE_DIR, '..', 'data', 'ecommerce.db')
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(Config)
 
     init_db(app)
 
