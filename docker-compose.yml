@@ -15,5 +15,19 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
+  web:
+    build: .
+    container_name: ecommerce-web
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    command: bash /app/entrypoint.sh
+
 volumes:
   postgres_data:
