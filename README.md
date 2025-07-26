@@ -1,92 +1,98 @@
 # 📊 E-Commerce Data Simulator
 
-🚀 **Simulating real-time e-commerce data for practice and testing**  
-
-## **📌 Project Overview**  
-This project generates **realistic e-commerce data** in real time, including user registrations, purchases, and order details. The data is slightly modified on each iteration to simulate **live user activity and transactions**. It can be used for testing and development purposes, providing a dynamic dataset for e-commerce applications.  
+🚀 **A project to help users access real-time simulated e-commerce data for testing and development.**
 
 ---
 
-## **🛠️ Technologies & Tools**  
-- **🐍 Python** (Flask, SQLAlchemy, Faker)  
-- **📂 Database:** SQLite  
-- **📊 Data Generation:** Randomized user and purchase data  
-- **📄 Data Storage:** SQL database for persistent data  
+## 📌 Project Overview
+This tool generates **real-time e-commerce data** — including users, orders, products, and payments — and makes it accessible via a RESTful API. It is designed for developers, data engineers, and analysts who need **dynamic, realistic datasets** without relying on production systems.
 
 ---
 
-## **💽 Project Structure**  
+## 🛠️ Technologies Used
+- **🐍 Python:** Flask, SQLAlchemy, Faker  
+- **🗃️ Database:** SQLite (local)  
+- **📦 Docker:** Containerized environment  
+- **📑 API Docs:** OpenAPI + Swagger UI  
+
+---
+
+## 📂 Project Structure
 ```
-📂 ECOMM
-├── 🐜 README.md          # Project documentation
-├── 📂 app                # Application source code
-│   ├── __init__.py      # Initialization file
-│   ├── database.py      # Database configuration
-│   ├── models.py        # Database models
-│   ├── routes.py        # API routes
-│   └── utils.py         # Utility functions for data generation
-├── 📂 data               # Data storage
-├── 📂 instance           # Instance-specific files
-│   ├── data.db          # SQLite database
-│   └── config.py        # Configuration settings
-├── 📜 requirements.txt   # Project dependencies
-└── 📜 run.py             # Application entry point
+ecommerce-simulator/
+├── app/
+│   ├── models.py            # SQLAlchemy models
+│   ├── routes.py            # API endpoints
+│   ├── utils.py             # Data generation logic
+│   ├── stream_simulator.py  # Streaming activity simulation
+├── data/                    # SQLite database file
+├── static/                  # openapi.yml for Swagger UI
+├── templates/               # Swagger UI HTML (optional)
+├── run.py                   # Flask entry point
+├── Dockerfile               # Container setup
+├── docker-compose.yml       # Service orchestration
+└── requirements.txt         # Python dependencies
 ```
 
 ---
 
-## **🚀 How It Works**  
-1. **Generate Fake Users:** Simulate user registrations with random details.  
-2. **Simulate Purchases:** Create fake orders, order items, and payments for existing users.  
-3. **Store Data:** Persist all generated data in an SQLite database.  
-4. **API Access:** Retrieve and interact with data via a Flask API.  
+## 🚀 How to Use
 
----
-
-## **⚡ Quick Start**  
-### **1️⃣ Install Dependencies**  
-```sh
+### 1️⃣ Install Requirements
+```bash
 pip install -r requirements.txt
 ```
 
-### **2️⃣ Initialize the Database**  
-```sh
+### 2️⃣ Initialize the Database
+```bash
 python run.py init_db
 ```
 
-### **3️⃣ Run the Application**  
-```sh
+### 3️⃣ Run the Server
+```bash
 python run.py
 ```
 
-### **4️⃣ Generate Fake Data**  
-- **Register a User:**  
-  ```sh
-  curl -X GET http://localhost:5000/register_user
-  ```
-- **Simulate a Purchase:**  
-  ```sh
-  curl -X GET http://localhost:5000/simulate_purchase
+### 4️⃣ Access Real-Time Data via API
+
+- **Register a User**
+  ```bash
+  curl -X POST http://localhost:5000/users
   ```
 
-### **5️⃣ Access Data via API**  
-- **Get All Users:**  
-  ```sh
-  curl -X GET http://localhost:5000/users
+- **Get All Users**
+  ```bash
+  curl http://localhost:5000/users
   ```
-- **Get All Orders:**  
-  ```sh
-  curl -X GET http://localhost:5000/orders
+
+- **Simulate Streamed Activity**
+  ```bash
+  curl -X POST "http://localhost:5000/simulate_user_activity?max_events=10&interval_seconds=1"
   ```
 
 ---
 
-## **📌 Future Improvements**  
-✅ **Enhanced Data Realism:** Add more detailed user demographics and purchase patterns.  
-✅ **Scalability:** Support for larger datasets and more complex transactions.  
-✅ **Dockerized Deployment:** Simplify setup and deployment with Docker.  
-✅ **Integration with External Services:** Connect to external APIs for real-time product data.  
+## 📘 API Documentation
+
+You can access the **interactive API docs** at:
+
+🔗 [http://localhost:5000/swaggerui.html](http://localhost:5000/swaggerui.html)
+
+Make sure:
+- The `static/openapi.yml` file exists.
+- The Swagger UI HTML correctly references it.
 
 ---
 
-This project provides a robust foundation for simulating e-commerce data, enabling developers to test and refine their applications with realistic, dynamic data.
+## ✅ Use Cases
+
+- Testing ETL pipelines  
+- API response testing  
+- UI development without backend dependencies  
+- Demo apps for analytics or dashboards  
+
+---
+
+## 🎯 Goal
+
+This project aims to help users and developers **easily access real-time, evolving e-commerce data** without needing access to sensitive or live production systems.
