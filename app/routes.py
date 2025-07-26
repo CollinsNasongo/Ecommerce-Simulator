@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 from app.utils import user_registration, user_purchase, clear_test_data
 from app.models import db, User, UserDemographics, Order, Product, Category
 from app.stream_simulator import simulate_user_activity_stream
@@ -9,6 +9,11 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     return jsonify({'message': 'Welcome to the E-commerce Simulator API'})
+
+
+@main.route('/docs')
+def swagger_ui():
+    return render_template('swaggerui.html')
 
 # -------------------- USERS --------------------
 @main.route('/users', methods=['POST'])
@@ -217,4 +222,3 @@ def run_stream():
     simulate_user_activity_stream(interval_seconds=interval, max_events=max_events)
 
     return jsonify({'message': f'Simulated {max_events} events at {interval}s interval'})
-

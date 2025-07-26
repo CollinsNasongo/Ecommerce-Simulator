@@ -1,0 +1,216 @@
+openapi: 3.0.3
+info:
+  title: E-commerce Simulator API
+  version: 1.0.0
+  description: API for simulating user registration, purchases, and managing users, products, categories, and orders.
+
+paths:
+  /:
+    get:
+      summary: Welcome message
+      responses:
+        '200':
+          description: Welcome message returned
+
+  /users:
+    get:
+      summary: Get all users
+      responses:
+        '200':
+          description: List of users
+    post:
+      summary: Register a new user
+      responses:
+        '201':
+          description: User registered successfully
+
+  /users/{user_id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User data
+    delete:
+      summary: Delete user by ID
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User deleted
+
+  /users/{user_id}/demographics:
+    get:
+      summary: Get user demographics
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Demographics
+    put:
+      summary: Update user demographics
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                age:
+                  type: integer
+                gender:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                country:
+                  type: string
+                zip_code:
+                  type: string
+      responses:
+        '200':
+          description: Demographics updated
+
+  /orders:
+    get:
+      summary: Get all orders
+      responses:
+        '200':
+          description: List of orders
+
+  /orders/{order_id}:
+    get:
+      summary: Get order by ID
+      parameters:
+        - in: path
+          name: order_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Order details
+
+  /orders/user/{user_id}:
+    get:
+      summary: Get all orders for a user
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User orders
+
+  /products:
+    get:
+      summary: Get all products
+      responses:
+        '200':
+          description: List of products
+    post:
+      summary: Create a new product
+      responses:
+        '201':
+          description: Product created
+
+  /products/{product_id}:
+    get:
+      summary: Get product by ID
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product data
+    delete:
+      summary: Delete product by ID
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product deleted
+
+  /categories:
+    get:
+      summary: Get all categories
+      responses:
+        '200':
+          description: List of categories
+    post:
+      summary: Create a new category
+      responses:
+        '201':
+          description: Category created
+
+  /categories/{category_id}/products:
+    get:
+      summary: Get products in a category
+      parameters:
+        - in: path
+          name: category_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of products in category
+
+  /simulate_purchase:
+    post:
+      summary: Simulate a purchase
+      responses:
+        '201':
+          description: Purchase simulated
+
+  /clear_test_data:
+    delete:
+      summary: Clear all test data
+      responses:
+        '200':
+          description: Test data cleared
+
+  /simulate_user_activity:
+    post:
+      summary: Simulate user activity stream
+      parameters:
+        - in: query
+          name: max_events
+          schema:
+            type: integer
+        - in: query
+          name: interval_seconds
+          schema:
+            type: number
+      responses:
+        '200':
+          description: User activity simulated
