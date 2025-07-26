@@ -4,31 +4,49 @@ from app.models import db, User, UserDemographics, Order, OrderItem, Payment, Pr
 
 fake = Faker()
 
+def generate_email(name: str) -> str:
+    first, last = name.lower().split()[0:2]
+    domain = random.choice(['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com'])
+    
+    # Optional: Add digits for variety
+    suffix = str(random.randint(1, 99)) if random.random() < 0.3 else ''
+    
+    return f"{first}.{last}{suffix}@{domain}"
+
+
 def user_registration():
-    # Create a fake user
-    user = User(
-        name=fake.name(),
-        email=fake.unique.email(),
-        phone_number=fake.phone_number(),
-        address=fake.address(),
-    )
-    db.session.add(user)
-    db.session.commit()
+    try:
+        name = fake.name()
+        email = generate_email(name)
 
-    # Create fake demographics for the user
-    demographics = UserDemographics(
-        user_id=user.user_id,
-        age=random.randint(18, 65),
-        gender=random.choice(['Male', 'Female']),
-        city=fake.city(),
-        state=fake.state(),
-        country=fake.country(),
-        zip_code=fake.zipcode(),
-    )
-    db.session.add(demographics)
-    db.session.commit()
+        user = User(
+            name=name,
+            email=email,
+            phone_number=fake.phone_number(),
+            address=fake.address()
+        )
+        db.session.add(user)
+        db.session.flush()
 
-    return user
+        demographics = UserDemographics(
+            user_id=user.user_id,
+            age=random.randint(18, 65),
+            gender=random.choice(['Male', 'Female']),
+            city=fake.city(),
+            state=fake.state(),
+            country=fake.country(),
+            zip_code=fake.zipcode()
+        )
+        db.session.add(demographics)
+        db.session.commit()
+
+        return user
+
+    except Exception as e:
+        db.session.rollback()
+        raise RuntimeError(f"Failed to register user: {e}")
+
+
 
 def user_purchase():
     # Get a random user
@@ -73,3 +91,11 @@ def user_purchase():
     db.session.commit()
 
     return order
+def clear_test_data():
+    db.session.execute('DELETE FROM payments')
+    db.session.execute('DELETE FROM order_items')
+    db.session.execute('DELETE FROM orders')
+    db.session.execute('DELETE FROM user_demographics')
+    db.session.execute('DELETE FROM users')
+    db.session.commit()
+    return "Payments, order items, orders, users, and demographics cleared."

@@ -22,11 +22,15 @@ class UserDemographics(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
     age = db.Column(db.Integer, nullable=False)
-    gender = db.Column(db.String(20), nullable=False, check_constraint="gender IN ('Male', 'Female')")
+    gender = db.Column(db.String(20), nullable=False)
     city = db.Column(db.String(100))
     state = db.Column(db.String(100))
     country = db.Column(db.String(100))
     zip_code = db.Column(db.String(20))
+
+    __table_args__ = (
+        db.CheckConstraint("gender IN ('Male', 'Female')", name='check_gender'),
+    )
 
 
 # Categories Table
@@ -64,12 +68,16 @@ class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     total_price = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(20), nullable=False, check_constraint="status IN ('Pending', 'Shipped', 'Delivered', 'Cancelled')")
+    status = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
 
     # Relationships
     order_items = db.relationship('OrderItem', backref='order', cascade="all, delete-orphan")
     payment = db.relationship('Payment', backref='order', uselist=False, cascade="all, delete-orphan")
+
+    __table_args__ = (
+        db.CheckConstraint("status IN ('Pending', 'Shipped', 'Delivered', 'Cancelled')", name='check_order_status'),
+    )
 
 
 # Order Items Table
@@ -90,6 +98,11 @@ class Payment(db.Model):
     payment_id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('orders.order_id'), nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    method = db.Column(db.String(20), nullable=False, check_constraint="method IN ('Credit Card', 'PayPal', 'Bank Transfer', 'Cash on Delivery')")
-    status = db.Column(db.String(20), nullable=False, check_constraint="status IN ('Pending', 'Completed', 'Failed', 'Refunded')")
+    method = db.Column(db.String(20), nullable=False)
+    status = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
+
+    __table_args__ = (
+        db.CheckConstraint("method IN ('Credit Card', 'PayPal', 'Bank Transfer', 'Cash on Delivery')", name='check_payment_method'),
+        db.CheckConstraint("status IN ('Pending', 'Completed', 'Failed', 'Refunded')", name='check_payment_status'),
+    )
