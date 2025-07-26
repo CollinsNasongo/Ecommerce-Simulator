@@ -1,5 +1,5 @@
-import random
 from faker import Faker
+import random
 from app.models import db, User, UserDemographics, Order, OrderItem, Payment, Product
 
 fake = Faker()

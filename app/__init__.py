@@ -1,16 +1,16 @@
+import os
 from flask import Flask
-from flask_migrate import Migrate
-from app.config import Config
-from app.database import db
-
-migrate = Migrate()
+from app.database import init_db
 
 def create_app():
-    app = Flask(__name__, instance_relative_config=False)
-    app.config.from_object(Config)
+    app = Flask(__name__)
 
-    db.init_app(app)
-    migrate.init_app(app, db)
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    DB_PATH = os.path.join(BASE_DIR, '..', 'data', 'ecommerce.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    init_db(app)
 
     from app.routes import main
     app.register_blueprint(main)

@@ -1,9 +1,3 @@
 Flask
 Flask-SQLAlchemy
 Faker
-aiohttp
-Flask-Migrate
-psycopg2-binary       # Postgres driver
-alembic               # migration engine
-Faker                 # (if you’re still using Faker for data gen)
-dotenv
