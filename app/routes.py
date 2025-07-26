@@ -211,6 +211,10 @@ def api_clear_test_data():
 
 @main.route('/simulate_user_activity', methods=['POST'])
 def run_stream():
-    simulate_user_activity_stream(interval_seconds=1, max_events=10)
-    return jsonify({'message': 'Simulated 10 events'})
+    max_events = int(request.args.get('max_events', 10))
+    interval = float(request.args.get('interval_seconds', 1))
+
+    simulate_user_activity_stream(interval_seconds=interval, max_events=max_events)
+
+    return jsonify({'message': f'Simulated {max_events} events at {interval}s interval'})
 

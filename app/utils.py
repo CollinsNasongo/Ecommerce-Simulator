@@ -1,6 +1,7 @@
 from faker import Faker
 import random
 from app.models import db, User, UserDemographics, Order, OrderItem, Payment, Product
+from sqlalchemy import text
 
 fake = Faker()
 
@@ -92,10 +93,10 @@ def user_purchase():
 
     return order
 def clear_test_data():
-    db.session.execute('DELETE FROM payments')
-    db.session.execute('DELETE FROM order_items')
-    db.session.execute('DELETE FROM orders')
-    db.session.execute('DELETE FROM user_demographics')
-    db.session.execute('DELETE FROM users')
+    db.session.execute(text('DELETE FROM payments'))
+    db.session.execute(text('DELETE FROM order_items'))
+    db.session.execute(text('DELETE FROM orders'))
+    db.session.execute(text('DELETE FROM user_demographics'))
+    db.session.execute(text('DELETE FROM users'))
     db.session.commit()
     return "Payments, order items, orders, users, and demographics cleared."
